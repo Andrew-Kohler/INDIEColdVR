@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Grabber : MonoBehaviour
 {
-    public Collider us;
+    public Collider grabberCollider;
     public bool locked = false;
 
-    public GameObject parent;
+    public GameObject currentParent;
+    public GameObject heldParent;
     public GameObject held;
 
 
@@ -15,7 +16,7 @@ public class Grabber : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        us = GetComponent<Collider>();
+        grabberCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -31,12 +32,12 @@ public class Grabber : MonoBehaviour
                 if (g.gameObject.GetComponent<Collider>())
                 {
 
-                    if (g.gameObject.GetComponent<Collider>().bounds.Intersects(us.bounds))
+                    if (g.gameObject.GetComponent<Collider>().bounds.Intersects(grabberCollider.bounds))
                     {
                         Debug.Log("intersection");
                         held = g.gameObject;
-                        parent = (held.transform.parent == null)?null:held.transform.parent.gameObject;
-                        held.transform.SetParent(gameObject.transform);
+                        currentParent = (held.transform.parent == null)?null:held.transform.parent.gameObject;
+                        held.transform.SetParent(heldParent.transform); //gameObject.transform
 
                         locked = true;
                         return;
@@ -54,9 +55,9 @@ public class Grabber : MonoBehaviour
 
         if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger) & locked)
         {           
-            held.transform.SetParent((parent==null)?null:parent.transform);
+            held.transform.SetParent((currentParent==null)?null:currentParent.transform);
             locked = false;
-            parent = null;
+            currentParent = null;
             held = null;
         }
     }

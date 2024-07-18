@@ -31,6 +31,9 @@ public class UiControlScript : MonoBehaviour
 
     public GameObject RealRHand, RealLHand;
 
+    // Ok, so make a GameManager and adjust the toggles from there
+    
+
 
     // Start is called before the first frame update
     void Start()
