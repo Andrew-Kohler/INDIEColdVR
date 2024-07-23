@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public bool IsAxisJitter;
     public bool IsShakeJitter;
     public bool IsProxJitter;
+    public bool IsHeldObjectShaking;
     public static GameManager Instance
     {
         get

@@ -25,6 +25,11 @@ public class HandUI : MonoBehaviour
     {
         GameManager.Instance.IsProxJitter = !GameManager.Instance.IsProxJitter;
     }
+
+    public void ToggleHeldShake()
+    {
+        GameManager.Instance.IsHeldObjectShaking = !GameManager.Instance.IsHeldObjectShaking;
+    }
 }
 
     

@@ -41,6 +41,11 @@ public class HandShaker : MonoBehaviour
     [Header("Proximity Jitter Parameters")]
     [Tooltip("How close the hand needs to be to start shaking")] public double farProximity = 4;
     [Tooltip("How close the hand needs to be to be at max shaking")] public double closeProximity = .5;
+    public float proxMultiplier = 0;
+
+    [Header("Held Jitter Parameters")]
+    [Tooltip("% reduction of shaking when an object is held (0-1)")] public float weightReduction = .5f;
+    private float currentWeightReduction;
 
     private Vector3 currentPosition;
     private int xDirShake = 1;
@@ -48,14 +53,16 @@ public class HandShaker : MonoBehaviour
     private int zDirShake = 1;
 
     private CapsuleCollider proxCollider;
-    public float proxMultiplier = 0;
+    
     private List<Collider> nearbyColdObj;
+    private Grabber grabber;
 
     void Start()
     {
         nearbyColdObj = new List<Collider>();
         proxCollider = GetComponent<CapsuleCollider>();
         proxCollider.radius = (float)farProximity;
+        grabber = GetComponent<Grabber>();
     }
 
     // Update is called once per frame
@@ -64,6 +71,15 @@ public class HandShaker : MonoBehaviour
         enableAxisJitter = GameManager.Instance.IsAxisJitter;
         enableShakeJitter = GameManager.Instance.IsShakeJitter;
         enableProximityJitterStudy = GameManager.Instance.IsProxJitter;
+
+        if (grabber.locked)
+        {
+            currentWeightReduction = weightReduction;
+        }
+        else
+        {
+            currentWeightReduction = 1;
+        }
 
         if (enableProximityJitterStudy)
         {
@@ -101,7 +117,7 @@ public class HandShaker : MonoBehaviour
             currentAxisLimit = axisUpperLimit * proxMultiplier;
             if (enableAxisJitterX)
             {
-                currentAxisRotationX += axisSpeed * xDirAxis * Time.deltaTime * proxMultiplier;
+                currentAxisRotationX += axisSpeed * xDirAxis * Time.deltaTime * proxMultiplier * currentWeightReduction;
                 if (Mathf.Abs(currentAxisRotationX) > currentAxisLimit)
                 {
                     currentAxisRotationX = xDirAxis * currentAxisLimit;
@@ -110,7 +126,7 @@ public class HandShaker : MonoBehaviour
             }
             if (enableAxisJitterY)
             {
-                currentAxisRotationY += axisSpeed * yDirAxis * Time.deltaTime * proxMultiplier;
+                currentAxisRotationY += axisSpeed * yDirAxis * Time.deltaTime * proxMultiplier * currentWeightReduction;
                 if (Mathf.Abs(currentAxisRotationY) > currentAxisLimit)
                 {
                     currentAxisRotationY = yDirAxis * currentAxisLimit;
@@ -119,7 +135,7 @@ public class HandShaker : MonoBehaviour
             }
             if (enableAxisJitterZ)
             {
-                currentAxisRotationZ += axisSpeed * zDirAxis * Time.deltaTime * proxMultiplier;
+                currentAxisRotationZ += axisSpeed * zDirAxis * Time.deltaTime * proxMultiplier * currentWeightReduction;
                 if (Mathf.Abs(currentAxisRotationZ) > currentAxisLimit)
                 {
                     currentAxisRotationZ = zDirAxis * currentAxisLimit;
@@ -133,7 +149,7 @@ public class HandShaker : MonoBehaviour
             currentPosition = new Vector3(currShakeDistanceX, currShakeDistanceY, currShakeDistanceZ);
 
             // X increment
-            currShakeDistanceX += shakeSpeed * xDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier;
+            currShakeDistanceX += shakeSpeed * xDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier * currentWeightReduction;
             if (Mathf.Abs(currShakeDistanceX) > shakeUpperLimit * proxMultiplier)
             {
                 currShakeDistanceX = shakeUpperLimit * proxMultiplier * xDirShake;
@@ -141,7 +157,7 @@ public class HandShaker : MonoBehaviour
             }
 
             // Y increment
-            currShakeDistanceY += shakeSpeed * yDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier;
+            currShakeDistanceY += shakeSpeed * yDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier * currentWeightReduction;
             if (Mathf.Abs(currShakeDistanceY) > shakeUpperLimit * proxMultiplier)
             {
                 currShakeDistanceY = shakeUpperLimit * proxMultiplier * yDirShake;
@@ -149,7 +165,7 @@ public class HandShaker : MonoBehaviour
             }
 
             // Z increment
-            currShakeDistanceZ += shakeSpeed * zDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier;
+            currShakeDistanceZ += shakeSpeed * zDirShake * Time.deltaTime * UnityEngine.Random.Range(0, shakeUpperTravelLimit) * proxMultiplier * currentWeightReduction;
             if (Mathf.Abs(currShakeDistanceZ) > shakeUpperLimit * proxMultiplier)
             {
                 currShakeDistanceZ = shakeUpperLimit * proxMultiplier * zDirShake;
