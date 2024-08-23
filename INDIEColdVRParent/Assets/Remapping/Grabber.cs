@@ -12,12 +12,9 @@ public class Grabber : MonoBehaviour
     [Tooltip("The grabber that the object will parent to in order to shake")] public GameObject heldParent;
     public GameObject held;
 
-
-    public Vector3 distance;
     // Start is called before the first frame update
     void Start()
     {
-        grabberCollider = GetComponent<Collider>(); // Get rid of this
     }
 
     // Update is called once per frame
