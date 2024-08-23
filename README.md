@@ -1,5 +1,5 @@
 # **Overview** 
-Remapping stuff for Meta Quest Pro.
+An exploratory project that implements various methods of shaking the player's virtual hands.
 
 # **Requirements** 
 Unity Version 2021.3.31f1
@@ -11,18 +11,8 @@ Unity store assets to import:
 # **Contents**
 ## Scenes
 A single scene, *DemoScene*, contains a modified OVRCameraRig that can support remapping (*V1 Remappable OVR Camera Rig*).
-The scene contains a control panel for all currently implemented remapping techniques, with options to automatically set them to various detection thresholds from prior work.
+The scene contains a control panel for all currently implemented hand shaking techniques, with options to automatically set them to various detection thresholds from prior work.
 There are also some objects that can be picked up with the controller by pressing the back trigger button while touching the object.
 
-## V1 Remappable OVR Camera Rig
-This is a modified rig, that places objects in the appropriate locations in the hierarchy to support remapping without breaking other interactions (_as far as I know_).
-
-Right now, only the controllers are supported for remapping (see *Remapped Left OVRControllerVisual* for an example).
-As far as I know, any head-based remapping can be implemented by manipulating the *V1 Remappable OVR Camera Rig* object itself (see scripts on the GameObect).
-
-## Supported Techniques
-Four techniques are currently supported:
-- [Rotation Gain](https://ieeexplore.ieee.org/abstract/document/5072212)
-- [Translation Gain](https://ieeexplore.ieee.org/abstract/document/5072212)
-- [Strafing Gain](https://ieeexplore.ieee.org/document/9994980)
-- [Scaled Hand Movement](https://ieeexplore.ieee.org/document/9089480)
+## Link to Documentation
+https://docs.google.com/document/d/1xMIresJJCs58essS7dZ3-5Y7Zwj4QyKnC87-c80nClY/edit?usp=sharing
